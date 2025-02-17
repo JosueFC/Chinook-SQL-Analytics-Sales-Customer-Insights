@@ -1,5 +1,6 @@
 # Chinook SQL Analytics: Sales & Customer Insights
 Practice project for data analysis with SQL
+![image](https://github.com/user-attachments/assets/bf62dff6-90a1-4952-b8af-d1c700f4bfb2)
 
 
 1- Count the Number of Customers per Country
