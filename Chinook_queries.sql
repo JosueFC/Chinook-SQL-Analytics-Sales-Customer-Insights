@@ -27,3 +27,20 @@ Group BY C.CustomerID, C.FirstName, C.LastName, C.Country
 ORDER BY Total_Spent DESC
 LIMIT 5;
 
+--Predict Potential High-Value Customers Based on Past Purchases and Frequency
+SELECT C.CustomerID, C.FirstName, C.LastName, C.Email, C.Country,
+   COUNT(I.InvoiceID) AS PurchaseCount,
+   SUM(I.Total) AS Total_Spent,
+   AVG(I.Total) AS Avg_Spending,
+   MIN(I.InvoiceDate) AS First_Purchase,
+   MAX(I.InvoiceDate) AS Last_Purchase,
+   CASE
+   WHEN COUNT(I.InvoiceID) > 1
+   THEN (JULIANDAY(MAX(I.InvoiceDate)) - JULIANDAY(MIN(I.InvoiceDate))) / (COUNT(I.InvoiceID) - 1)
+   ELSE NULL
+   END AS Avg_Purchase_Interval
+FROM Customers C
+JOIN Invoices I ON C.CustomerID = I.CustomerID
+GROUP BY C.CustomerID
+HAVING SUM(I.Total) > (SELECT AVG(Total) FROM Invoices)
+ORDER BY Total_Spent DESC;
